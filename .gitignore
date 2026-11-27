@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 迁移产物与备份
+*.db
+*.db-wal
+*.db-shm
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.bak-*
+
+# 测试与临时数据
+/tmp/
+/out/
+scratch/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+.DS_Store
