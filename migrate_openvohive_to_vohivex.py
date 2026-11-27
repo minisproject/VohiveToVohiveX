@@ -1089,7 +1089,7 @@ def main(argv: list[str] | None = None) -> int:
 # core 期望存在、但 openvohive 可能没有的列；只用于报告，不主动创建。
 # 实测两代核心的差异列：
 #   v1.5.5 上游核心：card_policies.vowifi_enabled、sms_delivery_part.sip_code
-#   新版（/tmp/data 生产库）：card_policies.ims_mode/ims_profile_index、sms.bearer
+#   新版生产核心（实测）：card_policies.ims_mode/ims_profile_index、sms.bearer
 # 都只做「源缺列」提示，不主动创建 —— 由核心 AutoMigrate 负责。
 CORE_EXTRA_COLUMNS = {
     "card_policies": ["vowifi_enabled", "ims_mode", "ims_profile_index"],

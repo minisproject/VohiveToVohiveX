@@ -32,7 +32,7 @@ web:
 devices:
     - id: ec25-a
       name: 客厅模组
-      modem_imei: "860000000000001"
+      modem_imei: "111111111111111"
       device_backend: qmi
       qmi_use_proxy: true
       mbim_transport: auto
@@ -47,7 +47,7 @@ devices:
       operator_selection_mode: auto
     - id: ec20-b
       name: 阳台模组
-      modem_imei: "860000000000002"
+      modem_imei: "222222222222222"
       device_backend: at
     - id: bad-device
       name: 缺 IMEI
@@ -125,10 +125,10 @@ dst.executemany(
     "public_ipv6,private_ipv6,iccid,sim_inserted,signal_dbm,signal_rsrq,signal_rsrp,"
     "last_seen,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
     [
-        ("860000000000001", "客厅模组", "EC25", "EC25EFAR06A11M4G", "/dev/ttyUSB2",
-         "1.2.3.4", "10.0.0.2", "", "", "89860012345678901234", 1, -70, -12, -100,
+        ("111111111111111", "客厅模组", "EC25", "EC25EFAR06A11M4G", "/dev/ttyUSB2",
+         "1.2.3.4", "10.0.0.2", "", "", "89860000000000000001", 1, -70, -12, -100,
          ts(), ts(-240), ts()),
-        ("860000000000002", "阳台模组", "EC20", "EC20CEFILG", "/dev/ttyUSB4",
+        ("222222222222222", "阳台模组", "EC20", "EC20CEFILG", "/dev/ttyUSB4",
          "", "", "", "", "", 0, 0, 0, 0, ts(), ts(-240), ts()),
     ],
 )
@@ -136,25 +136,25 @@ dst.execute(
     "INSERT INTO sim_subscriptions (imsi,current_iccid,phone_number,modem_phone_number,"
     "vowifi_phone_number,operator,last_seen,created_at,updated_at)"
     " VALUES (?,?,?,?,?,?,?,?,?)",
-    ("460001234567890", "89860012345678901234", "13800138000", "13800138000", "",
+    ("460000000000000", "89860000000000000001", "13800000000", "13800000000", "",
      "CMCC", ts(), ts(-240), ts()),
 )
 dst.execute(
     "INSERT INTO sim_cards (iccid,imsi,operator,current_imei,reg_status,reg_status_text,"
     "lac,cell_id,apn,ims_status,last_seen,created_at,updated_at)"
     " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
-    ("89860012345678901234", "460001234567890", "CMCC", "860000000000001", 1, "已注册",
+    ("89860000000000000001", "460000000000000", "CMCC", "111111111111111", 1, "已注册",
      "1234", "56789", "cmnet", 1, ts(), ts(-240), ts()),
 )
 dst.execute(
     "INSERT INTO card_policies (iccid,network_enabled,airplane_enabled,ip_version,apn,"
     "source,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?)",
-    ("89860012345678901234", 1, 0, "v4v6", "cmnet", "user", ts(-240), ts()),
+    ("89860000000000000001", 1, 0, "v4v6", "cmnet", "user", ts(-240), ts()),
 )
 dst.execute(
     "INSERT INTO pending_phone_numbers (iccid,phone_number,modem_phone_number,"
     "vowifi_phone_number,created_at,updated_at) VALUES (?,?,?,?,?,?)",
-    ("89860012345678901234", "", "13800138000", "", ts(), ts()),
+    ("89860000000000000001", "", "13800000000", "", ts(), ts()),
 )
 
 # 短信：覆盖 GORM 纳秒时间、RFC3339、无时区、非法方向、坏时间五种形态
@@ -162,28 +162,28 @@ dst.executemany(
     "INSERT INTO sms (id,imsi,iccid,peer,local_phone,sender,recipient,content,type,"
     "status,timestamp,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
     [
-        (1, "460001234567890", "89860012345678901234", "10690001", "13800138000",
-         "10690001", "13800138000", "【验证码】123456", 1, 1, ts(-1, 123456789), ts(-1)),
-        (2, "460001234567890", "89860012345678901234", "10690001", "13800138000",
+        (1, "460000000000000", "89860000000000000001", "10690001", "13800000000",
+         "10690001", "13800000000", "【验证码】123456", 1, 1, ts(-1, 123456789), ts(-1)),
+        (2, "460000000000000", "89860000000000000001", "10690001", "13800000000",
          "", "", "收到谢谢", 2, 2, ts(0), ts(0)),
-        (3, "460001234567890", "", "10086", "", "10086", "", "余额提醒", 1, 0,
+        (3, "460000000000000", "", "10086", "", "10086", "", "余额提醒", 1, 0,
          ts(-160), ts(-160)),
-        (4, "460001234567890", "", "10010", "", "", "", "", 1, 0, ts(-161), ts(-161)),
-        (5, "460001234567890", "", "10011", "", "", "", "方向非法", 3, 0, ts(-162), ts(-162)),
-        (6, "460001234567890", "", "10012", "", "", "", "坏时间", 1, 0,
+        (4, "460000000000000", "", "10010", "", "", "", "", 1, 0, ts(-161), ts(-161)),
+        (5, "460000000000000", "", "10011", "", "", "", "方向非法", 3, 0, ts(-162), ts(-162)),
+        (6, "460000000000000", "", "10012", "", "", "", "坏时间", 1, 0,
          "not-a-time", ts(-163)),
     ],
 )
 dst.execute(
     "INSERT INTO sms_contacts (imsi,iccid,peer,last_sms_id,last_timestamp,last_content,"
     "last_type,unread_count,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)",
-    ("460001234567890", "89860012345678901234", "10690001", 2, ts(0), "收到谢谢", 2, 0,
+    ("460000000000000", "89860000000000000001", "10690001", 2, ts(0), "收到谢谢", 2, 0,
      ts(-240), ts(0)),
 )
 dst.execute(
     "INSERT INTO sms_delivery (message_id,imsi,iccid,device_id,peer,content,parts_total,"
     "acks,state,last_error,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-    ("msg-1", "460001234567890", "89860012345678901234", "860000000000001",
+    ("msg-1", "460000000000000", "89860000000000000001", "111111111111111",
      "10690001", "收到谢谢", 1, 1, "acked", "", ts(0), ts(0)),
 )
 dst.execute(

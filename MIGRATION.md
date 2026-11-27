@@ -12,7 +12,7 @@ VoHiveX 的内置核心是**上游 vohive 的预编译二进制**（`release/voh
 | 版本 | 特有内容 |
 |---|---|
 | 上游 v1.5.5 核心（本机实跑） | 21 表；`card_policies.vowifi_enabled`、`sms_delivery_part.sip_code` |
-| 生产库 `/tmp/data`（新版核心） | 27 表；`card_policies.ims_mode` / `ims_profile_index`、`sms.bearer`、整套 `sip_*` / `aka_identity_records` / `home_identities` |
+| 新版生产核心（实测） | 27 表；`card_policies.ims_mode` / `ims_profile_index`、`sms.bearer`、整套 `sip_*` / `aka_identity_records` / `home_identities` |
 | openvohive（本仓库） | 14 表；上述列与表都没有 |
 
 结论：**整库拷贝才是正确做法**，逐表转换会丢数据。核心启动时 `AutoMigrate`
